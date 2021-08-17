@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width = device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <!-- Bootstrap CSS from a CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Pagination</title>
+     <style>
+        #switch{
+          position: absolute;
+          top: 600px;
+          left:450px;
+          padding: 20px;
+        }
+
+        nav ul li a:hover, nav ul li a:focus {
+            color: black;
+            background-color: #fdc6d4;
+            font-weight: bold;
+           
+        }
+
+        table {
+            border: 1.5px solid black;
+            text-align: center;
+            margin-top: 20px;
+            margin-left: 70px;
+            background-color: rgb(206, 203, 203);
+        }
+
+        .table .thead-top th {
+           color: rgb(32, 31, 31);
+           background-color: rgb(190, 194, 201);
+           border-color: #454d55;
+           font-size: x-large;
+           font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+           text-decoration: underline;
+        }
+        
+
+        table tr:hover{
+            transform: scale(1.1);
+        }
+    
+        
+      </style>
+  </head>
+  <body>
+    <nav aria-label="Page navigation example" id="switch">
+        <ul class="pagination" id="page">
+          <li class="page-item"><a id="0" onclick="cdp()" class="page-link" href="#">Prev</a></li>
+          <li class="page-item"><a id="1" onclick="cd(1)" class="page-link" href="#">1</a></li>
+          <li class="page-item"><a id="2" onclick="cd(2)"class="page-link" href="#">2</a></li>
+          <li class="page-item"><a id="3" onclick="cd(3)" class="page-link" href="#">3</a></li>
+          <li class="page-item"><a id="4" onclick="cd(4)" class="page-link" href="#">4</a></li>
+          <li class="page-item"><a id="5" onclick="cd(5)" class="page-link" href="#">5</a></li>
+          <li class="page-item"><a id="6" onclick="cd(6)" class="page-link" href="#">6</a></li>
+          <li class="page-item"><a id="7" onclick="cd(7)" class="page-link" href="#">7</a></li>
+          <li class="page-item"><a id="8" onclick="cd(8)" class="page-link" href="#">8</a></li>
+          <li class="page-item"><a id="9" onclick="cd(9)" class="page-link" href="#">9</a></li>
+          <li class="page-item"><a id="10" onclick="cdn()" class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+
+<script>
+        
+//1.Create a XMLHTTPREQUEST object
+var req = new XMLHttpRequest();
+//2.open a connection
+//true is use bcz that should not affect the rest part of the exection of the prgrm
+
+req.open('GET','https://raw.githubusercontent.com/Rajavasanthan/jsondata/master/pagenation.json ',true);
+//3.send the connection
+//send the request
+req.send();
+//4.once the data received successfully
+//data receiveing fromthe server will be of string format
+//to conver it into a js object we use .parse.
+
+
+let data;
+req.onload=function()
+{
+  
+    data = JSON.parse(this.response);
+    tables();
+}
+var table=document.createElement('table');
+
+var thead= document.createElement('thead');
+let tables=()=>{
+    
+table.className ="table";
+
+thead.className="thead-top";
+
+
+var tr=document.createElement('tr');
+
+var th1=createth('th','Name');
+var th2=createth('th','ID');
+var th3=createth('th',' mail id')
+
+
+
+tr.append(th1,th2,th3);
+thead.append(tr);
+
+
+function createth(elementname,value=" "){
+    var td=document.createElement(elementname);
+    td.innerHTML=value;
+    return td;
+}
+    for(let i=0;i<10;i++){
+    var tbody=document.createElement('tbody');
+    
+    var tr=document.createElement('tr');
+    var td1=createth('td',data[i].name);
+    var td2=createth('td',data[i].id);
+    var td3=createth('td',data[i].email);
+ 
+    tr.append(td1,td2,td3);
+    tbody.append(tr);
+    table.append(thead,tbody);
+    document.body.append(table);
+   
+    }
+}
+
+var num;
+
+    
+let cd = (n) => {
+        
+    tableers(n);
+    num=n;
+}
+
+
+let currenpage=num;
+
+let cdn= () => {
+    
+    if(num<=9){
+    tableers(num);
+    
+    num++;
+    }
+}
+
+ 
+let cdp=()=>{
+    if(num>0){
+      num--;
+      tableers(num);
+    }
+}
+
+let tableers =(num) =>{
+    
+    table.innerHTML=document.createElement('table');
+   
+    thead= document.createElement('thead');
+    thead.className="thead-top";
+    
+    
+    var tr=document.createElement('tr');
+    
+    var th1=createth('th','Name');
+    var th2=createth('th','ID');
+    var th3=createth('th',' Mail Id')
+    
+    
+    
+    tr.append(th1,th2,th3);
+    thead.append(tr);
+    
+    
+    function createth(elementname,value=" "){
+        var td=document.createElement(elementname);
+        td.innerHTML=value;
+        return td;
+    }
+       
+        var tc=num*10+10;
+        for(let i=num*10;i<tc;i++){
+        var tbody=document.createElement('tbody');
+        
+        var tr=document.createElement('tr');
+        var td1=createth('td',data[i].name);
+        var td2=createth('td',data[i].id);
+        var td3=createth('td',data[i].email);
+     
+        tr.append(td1,td2,td3);
+        tbody.append(tr);
+        table.append(thead,tbody);
+        document.body.append(table);
+       
+        /*https://docs.google.com/document/d/1O8yVCwB_GaY5rZK1_mNkZ9GeYJLeom_dYmcVN3Mb2ws/edit
+        https://raw.githubusercontent.com/Rajavasanthan/jsondata/master/pagenation.json
+        https://github.com/rvsp/HTML-CSS/blob/master/Mini-tasks/003-JS-DOM.md*/
+      
+           
+        }
+        
+    }
+
+     </script>
+  </body>
+</html>
